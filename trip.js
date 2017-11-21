@@ -7,6 +7,30 @@ var Record = function (name,utility,timeCost,openTime,closeTime) {
   this.visited = false;
 };
 
+var findDistance = function (startPoint,endPoint,distanceTable) {
+  var paths = {endPoint:0};
+  var vertices = distanceTable.locations;
+  vertices.forEach(function (v) {
+    paths[v] = Infinity;
+  }
+  var edges= distanceTable.edges;
+  vertices.forEach(function (vertex) {
+    var e;
+    for (e in edges) {
+      var u = e[0];
+      var v = e[1];
+      var w = e[2];
+      if (u == endPoint) {
+        paths[v] = w;
+      }
+      else if (paths[u] +w < paths[v]) {
+        paths[v] = paths[u]+w;
+      }
+    }
+  });
+  return paths[startPoint];
+}
+
 var findTrip = function (recordTable,distanceTable,budget,startingPoint,itenary,tod) {
   if (budget <= 0) {
     return itenary;
@@ -35,6 +59,8 @@ var findTrip = function (recordTable,distanceTable,budget,startingPoint,itenary,
   var winner = orderdPoints[0];
   itenary.push(winner);
   recordTable[winner[0]].visisted = true;
+  return findTrip(recordTable,distanceTable,budget-localCosts[winner[0]],winner[0],itenary,tod+localCosts[winner[0]]);
+};
 
 
 
