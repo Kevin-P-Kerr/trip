@@ -71,13 +71,23 @@ var findTrip = function (recordTable,distanceTable,budget,startingPoint,itenary,
   return findTrip(recordTable,distanceTable,budget-localCosts[winner[0]],winner[0],itenary,tod+localCosts[winner[0]]);
 };
 
-var distances = {};
-var edges = [['A','B',22],['A','C',100],['E','F',20],['A','E',30],['E','G',5]];
-distances.locations = ['A','C','D','E','F','G','B'];
-distances.edges = edges;
+var places = [];
+places.push(new Record("louvre",30,2,9,16));
+places.push(new Record("gustave m house",50,1.5,10,16));
+places.push(new Record("ble sucre",15,0.3,8,19));
+places.push(new Record("parc luxem",30,0.5,6,19));
+places.push(new Record("petite pal",25,1.5,10,17))
+places.push(new Record("canal st martin",30,0.5,6,19));
+places.push(new Record("batignolles",25,0.5,6,19));
+places.push(new Record("minzon",38,1,12,21));
+places.push(new Record("l'as fal",20,0.5,12,22));
+places.push(new Record("pastry cyril",38,0.5,7,20));
+places.push(new Record("comptoir",38,1,18,24));
+places.push(new Record("east mama",35,1.5,19,22));
+places.push(new Record("pause cafe",29,0.5,8,24));
+places.push(new Record("mama shelter",36,1,18,24));
+
 var main = function () {
-  var f = findDistance('B','G',distances);
-  console.log(f);
 };
 
 
