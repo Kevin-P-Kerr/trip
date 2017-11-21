@@ -15,7 +15,6 @@ var findDistance = function (startPoint,endPoint,distanceTable) {
     if (v==endPoint) {return;}
     paths[v] = Infinity;
   });
-  console.log(paths);
   var edges= distanceTable.edges;
   vertices.forEach(function (vertex) {
     edges.forEach(function (e) {
@@ -36,9 +35,21 @@ var findDistance = function (startPoint,endPoint,distanceTable) {
       }
     });
   });
-  console.log(paths);
   return paths[startPoint];
 }
+
+var inWindow = function (record,tod) {
+  return record.openTime > tod && record.closeTime < tod;};
+
+var getTotalPoints = function (recordTable) {
+  var  i =0;
+  var k;
+  for (k in recordTable) {
+    if (recordTable[k].visited) { continue; }
+    i+=recordTable[k].utility;
+  }
+};
+
 
 var findTrip = function (recordTable,distanceTable,budget,startingPoint,itenary,tod) {
   if (budget <= 0) {
@@ -48,8 +59,8 @@ var findTrip = function (recordTable,distanceTable,budget,startingPoint,itenary,
   var localCosts = {};
   var distance;
   for (k in recordTable) {
-    distance = calculateDistance(startingPoint,k,distanceTable);
-    localCosts[k] = distance+recordTable[k].timeCost;
+    distance = findDistance(startingPoint,k,distanceTable);
+    localCosts[k] = distance+(recordTable[k].timeCost*60);
   }
   var totalPoints = getTotalPoints(recordTable);
   var orderedPoints = [];
@@ -65,10 +76,13 @@ var findTrip = function (recordTable,distanceTable,budget,startingPoint,itenary,
     orderedPoints.push([k,utilityRat*timeRat]);
   }
   orderedPoints.sort(function (a,b) { if (a[1] > b[1]) { return -1; } else { return 1; }});
-  var winner = orderdPoints[0];
+  var winner = orderedPoints[0];
   itenary.push(winner);
   recordTable[winner[0]].visisted = true;
-  return findTrip(recordTable,distanceTable,budget-localCosts[winner[0]],winner[0],itenary,tod+localCosts[winner[0]]);
+  var localCostsHours = localCosts[winner[0]]/60;
+  var newBudget = budget-localCostsHours;
+  var newTOD = tod+localCostsHours;
+  return findTrip(recordTable,distanceTable,newBudget,winner[0],itenary,newTOD);
 };
 
 var places = [];
@@ -172,10 +186,9 @@ distances.locations = (function () {
 distances.edges = edges;
 
 var main = function () {
-  var f = findDistance("l'as fal","mama shelter",distances);
-  console.log(f);
+  var t = findTrip(p,distances,12,"louvre",[],8);
+  console.log(t);
 };
-
 
 main();
 
