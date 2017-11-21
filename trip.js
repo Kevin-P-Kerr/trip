@@ -87,7 +87,93 @@ places.push(new Record("east mama",35,1.5,19,22));
 places.push(new Record("pause cafe",29,0.5,8,24));
 places.push(new Record("mama shelter",36,1,18,24));
 
+var p = {};
+places.forEach(function (pl) {
+  p[pl.name] = pl;
+});
+
+var edges = [];
+edges.push(["louvre","gustave m house",19]);
+edges.push(["louvre","ble sucre",30]);
+edges.push(["louvre","parc luxem",23]);
+edges.push(["louvre","petite pal",20]);
+edges.push(["louvre","canal st martin",27]);
+edges.push(["louvre","batignolles",30]);
+edges.push(["louvre","minzon",20]);
+edges.push(["louvre","l'as fal",20]);
+edges.push(["louvre","comptoir",25]);
+edges.push(["louvre","east mama",27]);
+edges.push(["louvre","pause cafe",27]);
+edges.push(["louvre","mama shelter",40]);
+edges.push(["pasty cyril","gustave m house",35]);
+edges.push(["pastry cyril","ble sucre",10]);
+edges.push(["pastry cyril","parc luxem",34]);
+edges.push(["pastry cyril","petite pal",35]);
+edges.push(["pastry cyril","canal st martin",19]);
+edges.push(["pastry cyril","batignolles",44]);
+edges.push(["pastry cyril","minzon",20]);
+edges.push(["pastry cyril","l'as fal",28]);
+edges.push(["pastry cyril","comptoir",28]);
+edges.push(["pastry cyril","east mama",8]);
+edges.push(["pastry cyril","pause cafe",9]);
+edges.push(["pastry cyril","mama shelter",20]);
+edges.push(["gustave m house","ble sucre",36]);
+edges.push(["gustave m house","parc luxem",31]);
+edges.push(["gustave m house","petite pal",17]);
+edges.push(["gustave m house","canal st martin",26]);
+edges.push(["gustave m house","batignolles",22]);
+edges.push(["gustave m house","minzon",37]);
+edges.push(["gustave m house","l'as fal",25]);
+edges.push(["gustave m house","comptoir",35]);
+edges.push(["gustave m house","east mama",39]);
+edges.push(["gustave m house","pause cafe",35]);
+edges.push(["gustave m house","mama shelter",31]);
+edges.push(["ble sucre","parc luxem",35]);
+edges.push(["ble sucre","petite pal",40]);
+edges.push(["ble sucre","canal st martin",35]);
+edges.push(["ble sucre","batignolles",26]);
+edges.push(["ble sucre","minzon",23]);
+edges.push(["ble sucre","l'as fal",25]);
+edges.push(["ble sucre","comptoir",37]);
+edges.push(["ble sucre","east mama",39]);
+edges.push(["ble sucre","pause cafe",40]);
+edges.push(["ble sucre","mama shelter",43]);
+edges.push(["parc luxem","petite pal",30]);
+edges.push(["parc luxem","canal st martin",33]);
+edges.push(["parc luxem","batignolles",51]);
+edges.push(["parc luxem","minzon",26]);
+edges.push(["parc luxem","l'as fal",25]);
+edges.push(["parc luxem","comptoir",25]);
+edges.push(["parc luxem","east mama",40]);
+edges.push(["parc luxem","pause cafe",42]);
+edges.push(["parc luxem","mama shelter",60]);
+edges.push(["petite pal","canal st martin",35]);
+edges.push(["petite pal","batignolles",25]);
+edges.push(["petite pal","minzon",27]);
+edges.push(["petite pal","l'as fal",27]);
+edges.push(["petite pal","comptoir",39]);
+edges.push(["petite pal","east mama",40]);
+edges.push(["petite pal","pause cafe",42]);
+edges.push(["petite pal","mama shelter",49]);
+edges.push(["east mama","minzon",20]);
+edges.push(["east mama","l'as fal",25]);
+edges.push(["east mama","comptoir",32]);
+edges.push(["east mama","pause cafe",5]);
+edges.push(["east mama","mama shelter",23]);
+edges.push(["mama shelter","l'as fal",23]);
+var distances = {};
+distances.locations = (function () {
+  var x = [];
+  places.forEach(function (p) {
+    x.push(p.name);
+  });
+  return x;
+})();
+distances.edges = edges;
+
 var main = function () {
+  var f = findDistance("l'as fal","mama shelter",distances);
+  console.log(f);
 };
 
 
