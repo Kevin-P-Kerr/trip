@@ -39,7 +39,7 @@ var findDistance = function (startPoint,endPoint,distanceTable) {
 }
 
 var inWindow = function (record,tod) {
-  return record.openTime > tod && record.closeTime < tod;};
+  return record.openTime < tod && record.closeTime > tod;};
 
 var getTotalPoints = function (recordTable) {
   var  i =0;
@@ -48,6 +48,7 @@ var getTotalPoints = function (recordTable) {
     if (recordTable[k].visited) { continue; }
     i+=recordTable[k].utility;
   }
+  return i;
 };
 
 
@@ -65,7 +66,7 @@ var findTrip = function (recordTable,distanceTable,budget,startingPoint,itenary,
   var totalPoints = getTotalPoints(recordTable);
   var orderedPoints = [];
   for (k in localCosts) {
-    var timeRat = localCosts[k]/budget;
+    var timeRat = localCosts[k]/(budget*60);
     var utilityRat;
     if (inWindow(recordTable[k],tod) && !recordTable[k].visited) {
       utilityRat = recordTable[k].utility/totalPoints;
@@ -77,12 +78,29 @@ var findTrip = function (recordTable,distanceTable,budget,startingPoint,itenary,
   }
   orderedPoints.sort(function (a,b) { if (a[1] > b[1]) { return -1; } else { return 1; }});
   var winner = orderedPoints[0];
+  winner.push(tod);
   itenary.push(winner);
-  recordTable[winner[0]].visisted = true;
+  recordTable[winner[0]].visited = true;
   var localCostsHours = localCosts[winner[0]]/60;
   var newBudget = budget-localCostsHours;
-  var newTOD = tod+localCostsHours;
+  var newTOD = round(tod+localCostsHours);
+  winner.push(newTOD);
   return findTrip(recordTable,distanceTable,newBudget,winner[0],itenary,newTOD);
+};
+
+var round = function (tod) {
+  var n = Math.round(tod);
+  if (tod > n) {
+    if (tod-n > 0.25) {
+      return n+0.5;
+    }
+  }
+  if (tod < n) {
+    if (n-tod > 0.25) {
+      return n-0.5;
+    }
+  }
+  return n;
 };
 
 var places = [];
@@ -186,7 +204,7 @@ distances.locations = (function () {
 distances.edges = edges;
 
 var main = function () {
-  var t = findTrip(p,distances,12,"louvre",[],8);
+  var t = findTrip(p,distances,14,"louvre",[],7);
   console.log(t);
 };
 
